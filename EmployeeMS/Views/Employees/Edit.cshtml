@@ -1,0 +1,88 @@
+﻿@model EmployeeMS.Data.Entities.Employee
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container mt-5">
+    <h1>Edit Employee</h1>
+    <hr />
+
+    <form asp-action="Edit" id="editEmployeeForm">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Name</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Phone" class="form-label">Phone</label>
+            <input asp-for="Phone" class="form-control" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DepartmentId" class="form-label">Department</label>
+            <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"></select>
+            <span asp-validation-for="DepartmentId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 form-check">
+            <input class="form-check-input" asp-for="IsStillWorking" />
+            <label class="form-check-label">Is Still Working?</label>
+        </div>
+
+        <input type="hidden" asp-for="Id" />
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            // Handle form submission when the button is clicked
+            $("#editEmployeeForm").submit(function (event) {
+                // Prevent the default form submission
+                event.preventDefault();
+
+                // Serialize the form data
+                var formData = $(this).serialize();
+                var $form = $("#editEmployeeForm");
+                $.validator.unobtrusive.parse($form);
+                $form.validate();
+                if ($form.valid()) {
+                    // Send an AJAX request to the server
+                    $.ajax({
+                        type: "POST",
+                        url: $(this).attr("action"),
+                        data: formData,
+                        success: function (response) {
+                            // Handle the success response here, if needed
+                            alert("Form submitted successfully!");
+                            // Focus on the first form field
+                            $("#Name").focus();
+                        },
+                        error: function (error) {
+                            // Handle the error response here, if needed
+                            console.error("Error submitting form: " + error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

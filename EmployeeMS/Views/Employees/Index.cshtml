@@ -1,0 +1,111 @@
+﻿@model IEnumerable<EmployeeMS.Data.Entities.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container mt-5">
+    <h1>Employee List</h1>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
+    </p>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Phone)
+                    </th>
+                    <th>
+                        Department
+                    </th>
+                    <th>
+                        Is Still Working
+                    </th>
+                    <th>
+                        Created By
+                    </th>
+                    <th>
+                        Created At
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Department.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsStillWorking)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedBy.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedAt)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
+                            <a href="#" class="btn btn-danger btn-sm delete-button" data-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    $(document).ready(function () {
+        // Intercept delete button clicks with class 'delete-button'
+        $('.delete-button').on('click', function (event) {
+            event.preventDefault(); // Prevent the default click behavior
+
+            // Get the record ID from the data-id attribute
+            var recordId = $(this).data('id');
+
+            // Show a confirmation dialog
+            var isConfirmed = confirm('Are you sure you want to delete this record?');
+
+            // If user confirms, send AJAX request to delete the record
+            if (isConfirmed) {
+                $.ajax({
+                    url: '/Employees/Delete/' + recordId, // Replace with your actual delete endpoint URL
+                    type: 'Delete',
+                    dataType: 'json', // Expect JSON response from the server
+                    success: function () {
+                        // Handle success here (if needed)
+                        // For example, you can update the UI or show a success message
+                        console.log('Record deleted successfully:');
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+}
