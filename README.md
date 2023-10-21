@@ -34,7 +34,7 @@ Employee Management System is a web application designed to simplify the process
 
 2. **Navigate to Project Directory:**
    ```bash
-   cd employee-management-system
+   cd EmployeeMS
    ```
 
 3. **Restore Dependencies:**
