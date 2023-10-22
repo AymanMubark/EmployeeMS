@@ -1,4 +1,4 @@
-﻿using EmployeeMS.Models;
+﻿using EmployeeMS.DTOs;
 using EmployeeMS.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

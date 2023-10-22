@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace EmployeeMS.Models
+namespace EmployeeMS.DTOs
 {
     public class DepartmentOutputDto
     {

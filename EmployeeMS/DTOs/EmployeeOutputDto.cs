@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace EmployeeMS.Models
+namespace EmployeeMS.DTOs
 {
     public class EmployeeOutputDto
     {

@@ -1,4 +1,4 @@
-﻿namespace EmployeeMS.Models
+﻿namespace EmployeeMS.DTOs
 {
     public class AuthDto
     {
