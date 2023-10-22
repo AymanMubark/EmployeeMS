@@ -65,19 +65,18 @@ namespace EmployeeMS.Controllers
         // POST: Employees/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(EmployeeInputDto employeeDto)
+        public async Task<IActionResult> Create([FromForm] Employee employee,IFormFile Photo)
         {
-                var employee = _mapper.Map<Employee>(employeeDto);
-                employee.CreatedById = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+               employee.CreatedById = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                if (employeeDto.Photo != null)
+                if (Photo != null)
                 {
                     byte[] photoData = null;
-                    if (employeeDto.Photo != null && employeeDto.Photo.Length > 0)
+                    if (Photo != null && Photo.Length > 0)
                     {
                         using (var memoryStream = new MemoryStream())
                         {
-                            await employeeDto.Photo.CopyToAsync(memoryStream);
+                            await Photo.CopyToAsync(memoryStream);
                             photoData = memoryStream.ToArray();
                         }
                     }
@@ -113,7 +112,7 @@ namespace EmployeeMS.Controllers
         // POST: Employees/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Email,Phone,DepartmentId,IsStillWorking,Id")] Employee employee)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Email,Phone,DepartmentId,IsStillWorking,Id")] Employee employee,IFormFile Photo)
         {
             if (id != employee.Id)
             {
@@ -122,14 +121,26 @@ namespace EmployeeMS.Controllers
 
             if (ModelState.IsValid)
             {
+                if (Photo != null)
+                {
+                    byte[] photoData = null;
+                    if (Photo != null && Photo.Length > 0)
+                    {
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await Photo.CopyToAsync(memoryStream);
+                            photoData = memoryStream.ToArray();
+                        }
+                    }
+
+                    // Assign the photo data to the employee object
+                    employee.Photo = photoData;
+                }
                 await _employeeService.UpdateEmployeeAsync(id, employee);
                 return Ok();
             }
 
-            var departments = await _departmentService.GetAllDepartmentsAsync();
-            ViewData["DepartmentId"] = new SelectList(departments, "Id", "Name", employee.DepartmentId);
-
-            return Ok(employee);
+            return Ok();
         }
 
         // POST: Employees/Delete/5

@@ -25,6 +25,7 @@ namespace EmployeeMS.Services
                 .Include(e => e.CreatedBy)
                 .Include(e => e.Department)
                 .Where(x => !x.IsDeleted)
+                .OrderByDescending(x => x.CreatedAt)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -59,6 +60,10 @@ namespace EmployeeMS.Services
                 existingEmployee.Phone = employee.Phone;
                 existingEmployee.DepartmentId = employee.DepartmentId;
                 existingEmployee.IsStillWorking = employee.IsStillWorking;
+                if (employee.Photo != null)
+                {
+                    existingEmployee.Photo = employee.Photo;
+                }
 
                 await _context.SaveChangesAsync();
             }

@@ -18,6 +18,7 @@ namespace EmployeeMS.Models
         public bool IsStillWorking { get; set; }
 
         public string? CreatedById { get; set; }
+        public byte[]? Photo { get; set; }
         public UserOutputDto? CreatedBy { get; set; }
     }
 }

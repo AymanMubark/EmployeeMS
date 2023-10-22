@@ -1,4 +1,4 @@
-﻿@model EmployeeMS.Models.EmployeeInputDto
+﻿@model EmployeeMS.Data.Entities.Employee
 
 @{
     ViewData["Title"] = "Create";
@@ -42,7 +42,7 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="Photo" class="form-label">Photo</label>
-                    <input type="file" name="Photo" class="form-control" />
+                    <input type="file" name="Photo" id="Photo" class="form-control" />
                 </div>
                 <button type="button" id="submitBtn" class="btn btn-primary">Create</button>
             </form>
@@ -59,15 +59,28 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
+
         $(document).ready(function () {
             // Handle form submission when the button is clicked
             $("#submitBtn").click(function (event) {
                 // Prevent the default form submission
                 event.preventDefault();
 
-                // Serialize the form data
-                var formData = $("#createEmployeeForm").serialize();
-                console.log(formData);
+
+                // Create a FormData object to handle file uploads
+                var formData = new FormData(document.forms.item(0));
+
+                // Append form fields to the formData object
+                formData.append('Name', $('#Name').val());
+                formData.append('Email', $('#Email').val());
+                formData.append('Phone', $('#Phone').val());
+                formData.append('DepartmentId', $('#DepartmentId').val());
+                formData.append('IsStillWorking', $('#IsStillWorking').prop('checked'));
+
+                // Append the file data to the formData object
+                var file = $('#Photo').prop("files")[0];
+                formData.append('Photo', file);
+
                 var $form = $("#createEmployeeForm");
                 $.validator.unobtrusive.parse($form);
                 $form.validate();
@@ -77,7 +90,8 @@
                         type: "POST",
                         url: $("#createEmployeeForm").attr("action"),
                         data: formData,
-                        typ
+                        contentType: false, // Required for FormData
+                        processData: false, // Required for FormData
                         success: function (response) {
                             // Handle the success response here, if needed
                             alert("Form submitted successfully!");
