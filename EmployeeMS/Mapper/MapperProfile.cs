@@ -10,6 +10,7 @@ namespace EmployeeMS.Mapper
     {
         public MapperProfile()
         {
+            CreateMap<PagedList<Employee>, PagedList<EmployeeOutputDto>>().ReverseMap();
             CreateMap<Employee, EmployeeInputDto>().ReverseMap();
             CreateMap<IdentityUser, UserOutputDto>().
                 ForMember(dest => dest.Name, opt => opt.MapFrom(x => x.UserName)); 

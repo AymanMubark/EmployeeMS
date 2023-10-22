@@ -2,6 +2,7 @@
 using EmployeeMS.Data;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using EmployeeMS.Models;
 
 namespace EmployeeMS.Services
 {
@@ -15,13 +16,21 @@ namespace EmployeeMS.Services
             _context = context;
         }
 
-        public async Task<List<Employee>> GetEmployeesAsync()
+        public async Task<PagedList<Employee>> GetEmployeesAsync(int pageNumber = 1, int pageSize = 10)
         {
-            return await _context.Employee
+            var totalItems = await _context.Employee
+                .Where(x => !x.IsDeleted)
+                .CountAsync();
+
+            var employees = await _context.Employee
                 .Include(e => e.CreatedBy)
                 .Include(e => e.Department)
                 .Where(x => !x.IsDeleted)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return new PagedList<Employee>(employees, pageNumber, pageSize, totalItems);
         }
 
         public async Task<Employee?> GetEmployeeByIdAsync(Guid id)

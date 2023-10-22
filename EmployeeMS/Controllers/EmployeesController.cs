@@ -10,6 +10,7 @@ using EmployeeMS.Data.Entities;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using EmployeeMS.Services;
+using EmployeeMS.Models;
 
 namespace EmployeeMS.Controllers
 {
@@ -27,9 +28,9 @@ namespace EmployeeMS.Controllers
         }
 
         // GET: Employees
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
-            var employees = await _employeeService.GetEmployeesAsync();
+            var employees = await _employeeService.GetEmployeesAsync( pageNumber ,  pageSize);
             return View(employees);
         }
 

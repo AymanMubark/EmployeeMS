@@ -19,10 +19,11 @@ public class EmployeesApiController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<EmployeeOutputDto>>> GetEmployees()
+    public async Task<ActionResult<IEnumerable<EmployeeOutputDto>>> GetEmployees(int pageNumber = 1, int pageSize = 10)
     {
-        var employees = await _employeeService.GetEmployeesAsync();
-        return Ok(_mapper.Map<List<EmployeeOutputDto>>(employees));
+        var pagedEmployees = await _employeeService.GetEmployeesAsync(pageNumber, pageSize);
+
+        return Ok(_mapper.Map<PagedList<EmployeeOutputDto>>(pagedEmployees));
     }
 
     [HttpGet("{id}")]
@@ -33,7 +34,7 @@ public class EmployeesApiController : ControllerBase
         {
             return NotFound();
         }
-   
+
         return Ok(_mapper.Map<EmployeeOutputDto>(employee));
     }
 
@@ -51,7 +52,7 @@ public class EmployeesApiController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateEmployee(Guid id,[FromForm] EmployeeInputDto employeeDTO)
+    public async Task<IActionResult> UpdateEmployee(Guid id, [FromForm] EmployeeInputDto employeeDTO)
     {
         if (ModelState.IsValid)
         {
