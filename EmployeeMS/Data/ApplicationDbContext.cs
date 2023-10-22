@@ -10,7 +10,7 @@ namespace EmployeeMS.Data
             : base(options)
         {
         }
-        public DbSet<EmployeeMS.Data.Entities.Employee> Employee { get; set; } = null!;
-        public DbSet<EmployeeMS.Data.Entities.Department> Department { get; set; } = null!;
+        public DbSet<Employee> Employees { get; set; } = null!;
+        public DbSet<Department> Departments { get; set; } = null!;
     }
 }

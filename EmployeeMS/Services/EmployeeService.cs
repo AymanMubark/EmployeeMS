@@ -17,11 +17,11 @@ namespace EmployeeMS.Services
 
         public async Task<PagedList<Employee>> GetEmployeesAsync(int pageNumber = 1, int pageSize = 10)
         {
-            var totalItems = await _context.Employee
+            var totalItems = await _context.Employees
                 .Where(x => !x.IsDeleted)
                 .CountAsync();
 
-            var employees = await _context.Employee
+            var employees = await _context.Employees
                 .Include(e => e.CreatedBy)
                 .Include(e => e.Department)
                 .Where(x => !x.IsDeleted)
@@ -35,7 +35,7 @@ namespace EmployeeMS.Services
 
         public async Task<Employee?> GetEmployeeByIdAsync(Guid id)
         {
-            return await _context.Employee
+            return await _context.Employees
                 .Include(e => e.CreatedBy)
                 .Include(e => e.Department)
                 .Where(x => !x.IsDeleted)
@@ -51,7 +51,7 @@ namespace EmployeeMS.Services
 
         public async Task UpdateEmployeeAsync(Guid id, Employee employee)
         {
-            var existingEmployee = await _context.Employee.FirstOrDefaultAsync(e => e.Id == id);
+            var existingEmployee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
 
             if (existingEmployee != null)
             {
@@ -75,7 +75,7 @@ namespace EmployeeMS.Services
 
         public async Task DeleteEmployeeAsync(Guid id)
         {
-            var employee = await _context.Employee.FindAsync(id);
+            var employee = await _context.Employees.FindAsync(id);
             if (employee != null)
             {
                 employee.IsDeleted = true;

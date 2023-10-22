@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231022125037_AddPhotoColumn")]
-    partial class AddPhotoColumn
+    [Migration("20231022203318_AddAllTables")]
+    partial class AddAllTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,7 +40,7 @@ namespace EmployeeMS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Department");
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("EmployeeMS.Data.Entities.Employee", b =>
@@ -89,7 +89,7 @@ namespace EmployeeMS.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Employee");
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

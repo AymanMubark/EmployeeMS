@@ -38,7 +38,7 @@ namespace EmployeeMS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Department");
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("EmployeeMS.Data.Entities.Employee", b =>
@@ -87,7 +87,7 @@ namespace EmployeeMS.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Employee");
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

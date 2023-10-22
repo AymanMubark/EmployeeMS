@@ -59,7 +59,7 @@ namespace EmployeeMS.Controllers
         {
             var departments = await _departmentService.GetAllDepartmentsAsync();
             ViewData["DepartmentId"] = new SelectList(departments, "Id", "Name");
-            return View();
+            return View(new Employee { IsStillWorking = true});
         }
 
         // POST: Employees/Create

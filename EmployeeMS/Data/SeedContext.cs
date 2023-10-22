@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using EmployeeMS.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeMS.Data
@@ -18,6 +19,19 @@ namespace EmployeeMS.Data
             {
                 var admin = new IdentityUser { UserName = "admin@admin.com", Email = "admin@admin.com",EmailConfirmed =true };
                 await userManager.CreateAsync(admin, "P@$$0rd");
+            }
+
+
+            if (!await context.Departments.AnyAsync())
+            {
+                var departments = new[]
+                {
+                  new  Department(){Name = "IT"},
+                  new  Department(){Name = "HR"},
+                  new  Department(){Name = "Sales"}
+                };
+                await context.Departments.AddRangeAsync(departments);
+                await context.SaveChangesAsync();
             }
 
         }
