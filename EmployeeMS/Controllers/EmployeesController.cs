@@ -143,12 +143,6 @@ namespace EmployeeMS.Controllers
             return Ok();
         }
 
-        // POST: Employees/Delete/5
-        [HttpDelete, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            await _employeeService.DeleteEmployeeAsync(id);
-            return Ok();
-        }
+      
     }
 }
