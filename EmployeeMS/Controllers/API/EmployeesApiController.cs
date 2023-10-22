@@ -2,9 +2,12 @@
 using EmployeeMS.Data.Entities;
 using EmployeeMS.Models;
 using EmployeeMS.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("api/[controller]")]
 [ApiController]
 public class EmployeesApiController : ControllerBase
