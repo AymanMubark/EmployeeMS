@@ -23,5 +23,6 @@ namespace EmployeeMS.Models
 
         [Required(ErrorMessage = "IsStillWorking is required")]
         public bool IsStillWorking { get; set; }
+        public IFormFile? Photo { get; set; }
     }
 }

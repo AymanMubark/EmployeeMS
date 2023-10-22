@@ -1,4 +1,4 @@
-﻿@model EmployeeMS.Data.Entities.Employee
+﻿@model EmployeeMS.Models.EmployeeInputDto
 
 @{
     ViewData["Title"] = "Create";
@@ -10,7 +10,7 @@
 
     <div class="row">
         <div class="col-md-6">
-            <form asp-action="Create" id="createEmployeeForm">
+            <form asp-action="Create" id="createEmployeeForm" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
                 <div class="mb-3">
@@ -40,7 +40,10 @@
                     <input class="form-check-input" asp-for="IsStillWorking" />
                     <label class="form-check-label">Is Still Working?</label>
                 </div>
-
+                <div class="mb-3">
+                    <label asp-for="Photo" class="form-label">Photo</label>
+                    <input type="file" name="Photo" class="form-control" />
+                </div>
                 <button type="button" id="submitBtn" class="btn btn-primary">Create</button>
             </form>
         </div>
@@ -64,7 +67,7 @@
 
                 // Serialize the form data
                 var formData = $("#createEmployeeForm").serialize();
-
+                console.log(formData);
                 var $form = $("#createEmployeeForm");
                 $.validator.unobtrusive.parse($form);
                 $form.validate();
@@ -74,6 +77,7 @@
                         type: "POST",
                         url: $("#createEmployeeForm").attr("action"),
                         data: formData,
+                        typ
                         success: function (response) {
                             // Handle the success response here, if needed
                             alert("Form submitted successfully!");

@@ -20,5 +20,6 @@ namespace EmployeeMS.Data.Entities
         public string? CreatedById { get; set; }
         public IdentityUser? CreatedBy { get; set; }
         public bool IsDeleted { get; set; } = false;
+        public byte[]? Photo { get; set; }
     }
 }

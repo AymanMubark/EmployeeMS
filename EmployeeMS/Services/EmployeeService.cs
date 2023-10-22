@@ -1,6 +1,5 @@
-﻿using EmployeeMS.Data.Entities;
-using EmployeeMS.Data;
-using System.Security.Claims;
+﻿using EmployeeMS.Data;
+using EmployeeMS.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using EmployeeMS.Models;
 

@@ -42,11 +42,27 @@ public class EmployeesApiController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateEmployee(EmployeeInputDto employeeDTO)
+    public async Task<ActionResult> CreateEmployee([FromForm] EmployeeInputDto employeeDTO)
     {
         if (ModelState.IsValid)
         {
             var employee = _mapper.Map<Employee>(employeeDTO);
+
+            if (employeeDTO.Photo != null)
+            {
+                byte[] photoData = null;
+                if (employeeDTO.Photo != null && employeeDTO.Photo.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await employeeDTO.Photo.CopyToAsync(memoryStream);
+                        photoData = memoryStream.ToArray();
+                    }
+                }
+
+                // Assign the photo data to the employee object
+                employee.Photo = photoData;
+            }
             employee.CreatedById = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             await _employeeService.CreateEmployeeAsync(employee);
             return Ok();

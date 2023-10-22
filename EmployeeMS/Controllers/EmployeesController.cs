@@ -11,6 +11,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using EmployeeMS.Services;
 using EmployeeMS.Models;
+using AutoMapper;
 
 namespace EmployeeMS.Controllers
 {
@@ -20,11 +21,13 @@ namespace EmployeeMS.Controllers
 
         private readonly IEmployeeService _employeeService;
         private readonly IDepartmentService _departmentService;
+        private readonly IMapper _mapper;
 
-        public EmployeesController(IEmployeeService employeeService,IDepartmentService departmentService)
+        public EmployeesController(IEmployeeService employeeService, IDepartmentService departmentService, IMapper mapper)
         {
             _employeeService = employeeService;
             _departmentService = departmentService;
+            _mapper = mapper;
         }
 
         // GET: Employees
@@ -62,17 +65,29 @@ namespace EmployeeMS.Controllers
         // POST: Employees/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Email,Phone,DepartmentId,IsStillWorking,Id")] Employee employee)
+        public async Task<IActionResult> Create(EmployeeInputDto employeeDto)
         {
-            if (ModelState.IsValid)
-            {
+                var employee = _mapper.Map<Employee>(employeeDto);
                 employee.CreatedById = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (employeeDto.Photo != null)
+                {
+                    byte[] photoData = null;
+                    if (employeeDto.Photo != null && employeeDto.Photo.Length > 0)
+                    {
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await employeeDto.Photo.CopyToAsync(memoryStream);
+                            photoData = memoryStream.ToArray();
+                        }
+                    }
+
+                    // Assign the photo data to the employee object
+                    employee.Photo = photoData;
+                }
                 await _employeeService.CreateEmployeeAsync(employee);
-                return RedirectToAction(nameof(Index));
-            }
-            var departments = await _departmentService.GetAllDepartmentsAsync();
-            ViewData["DepartmentId"] = new SelectList(departments, "Id", "Name" ,employee.DepartmentId);
-            return View(employee);
+                return Ok();
+          
         }
 
         // GET: Employees/Edit/5
